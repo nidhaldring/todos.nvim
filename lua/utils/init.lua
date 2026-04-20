@@ -1,7 +1,9 @@
+---@param str string
+---@return table
 local function parse_grep_output(str)
 	-- TODO: i think this can be improved
 	local res = {}
-	local lines = string.gmatch(str, "[^\n\r]+")
+	local lines = string.gmatch(str, "[^\n\r]+") -- strip str
 	local i = 0
 	for line in lines do
 		local beg, fin = string.find(line, ":%d+:")
@@ -25,17 +27,20 @@ local function get_todos_from_cwd()
 		return
 	end
 
-	local cmd = string.format("grep -ri TODO %s", cwd)
+	-- TODO: replace with ripgrep or make rg default
+	-- make sure that u somehow search for a comment
+	local cmd = string.format("grep TODO %s", cwd)
+	print(cmd)
 	local output = (vim.api.nvim_exec2(cmd, { output = true }))["output"]
+	print(output)
 	return parse_grep_output(output)
 end
 
-local M = {}
+local utils = {}
 
-local function show_todos()
+function utils.show_todos()
 	local todos = get_todos_from_cwd()
+	print(vim.inspect(todos))
 end
 
-show_todos()
-
-return M
+return utils

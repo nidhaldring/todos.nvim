@@ -1,6 +1,9 @@
+local utils = require("utils")
+
 local M = {}
-M.steup = function()
-	vim.api.nvim_create_user_command("ShowTodos", show_todos, {})
+
+M.setup = function()
+	vim.api.nvim_create_user_command("ShowTodos", utils.show_todos, {})
 end
 
 return M
